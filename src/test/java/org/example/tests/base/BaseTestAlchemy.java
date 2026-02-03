@@ -6,12 +6,10 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
@@ -23,7 +21,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
  * Основные функции класса:
  * <ul>
  * <li>Инициализация AndroidDriver с настройками UiAutomator2 для физического устройства</li>
- * <li>Настройка неявных (10 секунд) и явных ожиданий (10 секунд)</li>
+ * <li>Настройка явных ожиданий Selenide (10 секунд)</li>
  * <li>Автоматическая активация приложения перед каждым тестом</li>
  * <li>Корректное завершение работы приложения и очистка ресурсов после тестов</li>
  * <li>Интеграция с Selenide для удобной работы с элементами</li>
@@ -32,7 +30,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTestAlchemy {
     private static final Logger log = LoggerFactory.getLogger(BaseTestAlchemy.class);
     protected AndroidDriver driver;
-    protected WebDriverWait wait;
 
     private static final String APP_PACKAGE = "com.ilyin.alchemy";
     private static final String APP_ACTIVITY = "com.ilyin.app_google_core.GoogleAppActivity";
@@ -45,7 +42,6 @@ public class BaseTestAlchemy {
     private static final boolean AUTO_GRANT_PERMISSIONS = false;
 
     private static final int TIMEOUT = 10000;
-    private static final int EXPLICIT_WAIT_TIMEOUT = 10;
 
     /**
      * Метод настройки перед каждым тестом.
@@ -72,7 +68,6 @@ public class BaseTestAlchemy {
 
         URI appiumServerUri = URI.create(APPIUM_SERVER_URL);
         this.driver = new AndroidDriver(appiumServerUri.toURL(), options);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
 
         WebDriverRunner.setWebDriver(driver);
         driver.activateApp(APP_PACKAGE);
