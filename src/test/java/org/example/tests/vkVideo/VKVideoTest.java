@@ -75,8 +75,8 @@ public class VKVideoTest extends BaseTestVkVideo {
             log.info("Невалидная ссылка обработана в приложении");
 
         } catch (WebDriverException e) {
-            log.info("ОЖИДАЕМЫЙ РЕЗУЛЬТАТ: Приложение отказалось открывать невалидную ссылку");
-            log.info("Сообщение ошибки: {}", e.getMessage());
+            log.info("Ожидаемое поведение: приложение не открыло невалидную ссылку - {}",
+                    e.getClass().getSimpleName());
         }
     }
 }

@@ -56,7 +56,7 @@ public class VKVideoUtils {
 
             log.info("Кнопка поиска успешно нажата");
         } catch (ElementNotFound | ElementNotInteractableException e) {
-            log.info("Кнопка поиска не найдена или не видима. Пропускаем клик.");
+            log.warn("Кнопка поиска не найдена или не видима. Пропускаем клик.");
         } catch (Exception e) {
             log.warn("Неожиданная ошибка при клике на кнопку поиска: {}", e.getMessage());
         }
@@ -126,8 +126,7 @@ public class VKVideoUtils {
         } else if (searchFieldExists) {
             log.info("УСПЕХ: Открылось поле поиска");
         } else if (titleExists && APP_TITLE.equals($(By.id(TITLE_ID)).getText())) {
-            log.info("ℹ ИНФО: Остались на главном экране");
-            log.info("Кнопка поиска может не работать или открывать поиск другим способом");
+            log.info("ИНФО: Остались на главном экране");
         }
     }
 
@@ -140,29 +139,19 @@ public class VKVideoUtils {
      *   <li>Нажимает на первый элемент контента</li>
      *   <li>Ожидает появления видеоплеера</li>
      * </ol>
-     *
-     * @throws Exception если произошла ошибка при запуске видео.
      */
     public static void playFirstVideoInFeed() {
         log.info("Запуск первого видео в ленте");
 
-        try {
-            $$(By.id("com.vk.vkvideo:id/content"))
-                    .shouldHave(CollectionCondition.sizeGreaterThan(1));
+        $$(By.id("com.vk.vkvideo:id/content"))
+                .shouldHave(CollectionCondition.sizeGreaterThan(1));
 
-            $$(By.id("com.vk.vkvideo:id/content")).first()
-                    .shouldBe(interactable)
-                    .click();
-            log.info("Кликнул на первое видео");
+        $$(By.id("com.vk.vkvideo:id/content")).first()
+                .shouldBe(interactable)
+                .click();
 
-            $(By.id(VIDEO_DISPLAY_ID))
-                    .shouldBe(visible);
-            log.info("Видео начало воспроизводиться");
-
-        } catch (Exception e) {
-            log.error("Ошибка при запуске видео: {}", e.getMessage(), e);
-            throw e;
-        }
+        $(By.id(VIDEO_DISPLAY_ID))
+                .shouldBe(visible);
     }
 
     /**
@@ -178,13 +167,11 @@ public class VKVideoUtils {
      * @throws com.codeborne.selenide.ex.ElementNotFound если элементы плеера не найдены
      */
     public static void assertVideoIsPlaying() {
-        log.info("Проверка воспроизведения видео");
+        log.debug("Проверка воспроизведения видео");
 
         $(By.id(PLAYER_CONTROL_ID)).shouldBe(visible);
-        log.debug("Элементы управления плеером найдены");
 
         $(By.id(LIKES_ID)).shouldBe(visible);
-        log.debug("Кнопка лайков найдена");
 
         String videoTitle = $(By.id(TITLE_ID)).getText();
         log.info("Видео успешно воспроизводится: {}", videoTitle);

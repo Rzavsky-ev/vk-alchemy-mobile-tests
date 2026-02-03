@@ -23,7 +23,6 @@ public class AlchemyUtils {
     private static final String PLAY_BUTTON = "new UiSelector().text(\"Играть\")";
     private static final String HINTS_SECTION = "new UiSelector().text(\"Ваши подсказки\")";
     private static final String WATCH_BUTTON = "new UiSelector().text(\"Смотреть\")";
-    private static final String DESCRIPTION_CONTAINS_HINT = "new UiSelector().descriptionContains(\"подсказ\")";
 
     /**
      * Запускает игру, нажимая на кнопку "Играть".
@@ -52,11 +51,10 @@ public class AlchemyUtils {
      * @throws com.codeborne.selenide.ex.ElementShould   если элемент не видим
      */
     public static void clickHint(int quantityHint) {
-        log.info("Жмем на подсказку");
+        log.info("Нажимаем на подсказку с количеством: {}", quantityHint);
         $(AppiumBy.androidUIAutomator("new UiSelector().text(\"" + quantityHint + "\")"))
                 .shouldBe(visible)
                 .click();
-        log.info("Подсказка нажата.");
     }
 
     /**
@@ -70,11 +68,10 @@ public class AlchemyUtils {
      * {@code false} в противном случае
      */
     public static boolean verifyHintsSectionVisible() {
-        log.info("Проверяем видимость раздела 'Ваши подсказки'");
+        log.debug("Проверка раздела 'Ваши подсказки'");
         try {
             $(AppiumBy.androidUIAutomator(HINTS_SECTION))
                     .shouldBe(visible);
-            log.info("Раздел 'Ваши подсказки' отображается");
             return true;
         } catch (Exception e) {
             log.warn("Раздел 'Ваши подсказки' не найден или не отображается: {}", e.getMessage());
@@ -97,15 +94,14 @@ public class AlchemyUtils {
      * {@code false} в случае любой ошибки
      */
     public static boolean watchAdForHints() {
-        log.info("Пытаемся нажать кнопку 'Смотреть' для просмотра рекламы");
+        log.info("Попытка запуска рекламы для подсказок");
         try {
             $(AppiumBy.androidUIAutomator(WATCH_BUTTON))
                     .shouldBe(visible)
                     .click();
-            log.info("Кнопка 'Смотреть' успешно нажата, реклама запущена");
             return true;
         } catch (Exception e) {
-            log.warn("Не удалось нажать кнопку 'Смотреть': {}", e.getMessage());
+            log.warn("Кнопка 'Смотреть' недоступна");
             return false;
         }
     }
@@ -122,23 +118,10 @@ public class AlchemyUtils {
      */
     public static void verifyHintsCount(int expectedCount) {
         log.info("Проверяем количество подсказок. Ожидаем: {}", expectedCount);
-        try {
-            $(AppiumBy.androidUIAutomator("new UiSelector().text(\"" + expectedCount + "\")"))
-                    .shouldBe(visible, LONG_TIMEOUT)
-                    .shouldHave(text(String.valueOf(expectedCount)));
-            log.info("Количество подсказок верное: {}", expectedCount);
-        } catch (Exception e) {
-            log.error("Не удалось проверить количество подсказок: {}", e.getMessage());
-            try {
-                String actualText = $(AppiumBy.androidUIAutomator(DESCRIPTION_CONTAINS_HINT))
-                        .shouldBe(visible)
-                        .getText();
-                log.debug("Текущее значение счетчика подсказок: {}", actualText);
-            } catch (Exception ex) {
-                log.debug("Не удалось получить текущее значение счетчика");
-            }
-            throw new AssertionError("Проверка количества подсказок не пройдена. Ожидалось: " + expectedCount);
-        }
+
+        $(AppiumBy.androidUIAutomator("new UiSelector().text(\"" + expectedCount + "\")"))
+                .shouldBe(visible, LONG_TIMEOUT)
+                .shouldHave(text(String.valueOf(expectedCount)));
     }
 
     /**

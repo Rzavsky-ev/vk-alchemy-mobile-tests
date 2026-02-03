@@ -89,7 +89,7 @@ public class BaseTestAlchemy {
                 driver.terminateApp(APP_PACKAGE);
             }
         } catch (Exception e) {
-            log.error("Ошибка при закрытии приложения: {}", e.getMessage(), e);
+            log.warn("Не удалось корректно закрыть приложение: {}", e.getMessage());
         } finally {
             closeWebDriver();
         }
