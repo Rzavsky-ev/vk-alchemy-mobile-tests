@@ -1,6 +1,5 @@
 package org.example.tests.base;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -18,12 +17,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
  * Основные функции класса:
  * <ul>
  * <li>Инициализация AndroidDriver с настройками UiAutomator2 для эмулятора</li>
- * <li>Настройка таймаутов для Selenide:
- *     <ul>
- *       <li>Базовый таймаут: {@value #DEFAULT_TIMEOUT} мс</li>
- *       <li>Таймаут загрузки страницы: {@value #PAGE_LOAD_TIMEOUT} мс</li>
- *     </ul>
- *   </li>
  *   <li>Автоматическая активация приложения VK Video перед каждым тестом</li>
  *   <li>Корректное завершение работы приложения и очистка ресурсов после тестов</li>
  *   <li>Интеграция с Selenide для удобной работы с элементами</li>*
@@ -33,9 +26,6 @@ public class BaseTestVkVideo {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTestVkVideo.class);
     protected AndroidDriver driver;
-
-    private static final int DEFAULT_TIMEOUT = 10000;
-    private static final int PAGE_LOAD_TIMEOUT = 15000;
 
     private static final String PLATFORM_NAME = "Android";
     private static final String PLATFORM_VERSION = "11.0";
@@ -55,8 +45,6 @@ public class BaseTestVkVideo {
      */
     @BeforeEach
     void setUp() throws Exception {
-        Configuration.timeout = DEFAULT_TIMEOUT;
-        Configuration.pageLoadTimeout = PAGE_LOAD_TIMEOUT;
 
         UiAutomator2Options options = new UiAutomator2Options()
                 .setPlatformName(PLATFORM_NAME)

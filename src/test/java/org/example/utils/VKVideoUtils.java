@@ -1,6 +1,5 @@
 package org.example.utils;
 
-
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ex.ElementNotFound;
 import io.appium.java_client.android.AndroidDriver;
@@ -15,8 +14,8 @@ import java.util.Map;
 
 import static com.codeborne.selenide.Condition.interactable;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 /**
  * Утилитарный класс для работы с приложением VK Video.
@@ -95,11 +94,11 @@ public class VKVideoUtils {
 
         try {
             $(By.id(FAST_LOGIN_BUTTON_ID))
-                    .shouldBe(visible)
+                    .shouldBe(visible, Duration.ofSeconds(10))
                     .click();
             log.info("Кнопка пропуска логина нажата");
         } catch (ElementNotFound e) {
-            log.debug("Кнопка пропуска логина не найдена");
+            log.debug("Кнопка пропуска логина не найдена (не появилась за 5 секунд)");
         }
     }
 
@@ -144,7 +143,10 @@ public class VKVideoUtils {
         log.info("Запуск первого видео в ленте");
 
         $$(By.id("com.vk.vkvideo:id/content"))
-                .shouldHave(CollectionCondition.sizeGreaterThan(1));
+                .shouldHave(
+                        CollectionCondition.sizeGreaterThan(1),
+                        Duration.ofSeconds(10)
+                );
 
         $$(By.id("com.vk.vkvideo:id/content")).first()
                 .shouldBe(interactable)

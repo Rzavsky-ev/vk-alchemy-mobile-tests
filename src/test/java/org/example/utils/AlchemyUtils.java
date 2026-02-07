@@ -97,7 +97,7 @@ public class AlchemyUtils {
         log.info("Попытка запуска рекламы для подсказок");
         try {
             $(AppiumBy.androidUIAutomator(WATCH_BUTTON))
-                    .shouldBe(visible)
+                    .shouldBe(visible, Duration.ofSeconds(10))
                     .click();
             return true;
         } catch (Exception e) {

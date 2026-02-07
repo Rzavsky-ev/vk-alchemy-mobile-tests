@@ -1,6 +1,5 @@
 package org.example.tests.base;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -21,7 +20,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
  * Основные функции класса:
  * <ul>
  * <li>Инициализация AndroidDriver с настройками UiAutomator2 для физического устройства</li>
- * <li>Настройка явных ожиданий Selenide (10 секунд)</li>
  * <li>Автоматическая активация приложения перед каждым тестом</li>
  * <li>Корректное завершение работы приложения и очистка ресурсов после тестов</li>
  * <li>Интеграция с Selenide для удобной работы с элементами</li>
@@ -41,8 +39,6 @@ public class BaseTestAlchemy {
     private static final boolean NO_RESET = true;
     private static final boolean AUTO_GRANT_PERMISSIONS = false;
 
-    private static final int TIMEOUT = 10000;
-
     /**
      * Метод настройки перед каждым тестом.
      * Инициализирует соединение с физическим устройством и настраивает окружение для тестирования.
@@ -54,7 +50,6 @@ public class BaseTestAlchemy {
      */
     @BeforeEach
     void setUp() throws Exception {
-        Configuration.timeout = TIMEOUT;
 
         UiAutomator2Options options = new UiAutomator2Options()
                 .setPlatformName(PLATFORM_NAME)
